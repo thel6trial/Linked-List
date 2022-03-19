@@ -1,0 +1,74 @@
+#include<iostream>
+
+using namespace std;
+
+struct node{
+    int data;
+    node *next;
+};
+struct list{
+    node *pHead;
+    node *pTail;
+};
+void Khoitaolist(list &l){
+    l.pHead = NULL;
+    l.pTail = NULL;
+}
+node *Khoitaonode(int x){
+    node *p = new node;
+    p->data = x;
+    p->next = NULL;
+    return p;
+}
+void Themvaocuoi(list &l, node *p){
+    if(l.pHead == NULL){
+        l.pHead = l.pTail = p;
+    }else{
+        l.pTail->next = p;
+        l.pTail = p;
+    }
+}
+void deleteB(list &l, list &z, int y){
+    node *t = new node;
+    for(node *p = l.pHead; p != NULL; p=p->next){
+        if(p->data <= y){
+            t = Khoitaonode(p->data);
+            Themvaocuoi(z, t);
+        }
+    }
+}
+void display(list &l){
+   for(node *m = l.pHead; m != NULL; m=m->next){
+       cout << m->data << " ";
+   }
+}
+
+int main(){
+    list l;
+    Khoitaolist(l);
+    int n;
+    cin >> n;
+    for(int i = 0; i < n; i++){
+        int x;
+        cin >> x;
+        node *p = Khoitaonode(x);
+        Themvaocuoi(l, p);
+    }
+    int k;
+    cin >> k;
+    int check = 0;
+    int y;
+    for(node *o = l.pHead; o!= NULL; o=o->next){
+        if(check == k){ 
+            y = o->data;
+            break;
+        }else{
+            check++;
+        }
+    }
+    list z;
+    Khoitaolist(z);
+    deleteB(l, z, y);
+    display(z);
+    return 0;
+}
