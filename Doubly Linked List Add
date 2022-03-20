@@ -1,0 +1,80 @@
+#include<iostream>
+using namespace std;
+
+struct node{
+    int data;
+    node *next;
+    node *pre;
+};
+struct list{
+    node *pHead;
+    node *pTail;
+};
+void Khoitaolist(list &l){
+    l.pHead = NULL;
+    l.pTail = NULL;
+}
+node *Khoitaonode(int x){
+    node *p = new node;
+    p->data = x;
+    p->next = NULL;
+    p->pre = NULL;
+    return p;
+}
+void Themvaodau(list &l, node *p){
+    if(l.pHead == NULL){
+        l.pHead = l.pTail = p;
+    }else{
+    p->next = l.pHead;
+    l.pHead->pre = p;
+    l.pHead = p;
+    }
+}
+void Themvaocuoi(list &l, node *p){
+    if(l.pHead == NULL){
+        l.pHead = l.pTail = p;
+    }else{
+    p->pre = l.pTail;
+    l.pTail->next = p;
+    l.pTail = p;
+    }
+}
+void chen(list &l, node *p, int n, int k){
+    if(k == 0) Themvaodau(l, p);
+    else if(k == n) Themvaocuoi(l, p);
+    else{
+        int check = 0;
+        for(node *t = l.pHead; t != NULL; t = t->next){
+            if(check == k-1){
+                p->next = t->next;
+                (t->next)->pre = p;
+                p->pre = t;
+                t->next = p;
+            }
+            check++;
+        }
+    }
+}
+void print(list &l){
+    for(node *p = l.pHead; p != NULL; p=p->next){
+        cout << p->data << " ";
+    }
+}
+int main(){
+   list l;
+    Khoitaolist(l);
+    int n;
+    cin >> n;
+    for(int i = 1; i <= n; i++){
+        int x;
+        cin >> x;
+        node *p = Khoitaonode(x);
+        Themvaocuoi(l, p);
+    }
+    int k, x;
+    cin >> k >> x;
+    node *q = Khoitaonode(x);
+    chen(l, q, n, k);
+    print(l);
+    return 0;
+}
